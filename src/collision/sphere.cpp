@@ -8,8 +8,13 @@ using namespace nanogui;
 using namespace CGL;
 
 void Sphere::collide(PointMass &pm) {
-  // TODO (Part 3): Handle collisions with spheres.
+    Vector3D posDelta = pm.position - origin;
+    if (posDelta.norm() > radius)
+        return;
 
+    Vector3D intersect = origin + posDelta.unit() * radius;
+    Vector3D correction = intersect - pm.last_position;
+    pm.position = pm.last_position + correction * (1 - friction);
 }
 
 void Sphere::render(GLShader &shader) {
